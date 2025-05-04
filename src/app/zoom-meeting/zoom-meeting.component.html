@@ -1,0 +1,16 @@
+<section class="overlay">
+
+  <div class="timer-container">
+    <div class="timer-container-time">
+5:10
+    </div>
+  </div>
+
+  <div class="manos-container">
+    <ul class="manos-container-lista">
+      <li class="manos-container-lista-item" *ngFor="let user of raisedHands">🖐 {{ user }}</li>
+    </ul>
+  </div>
+</section>
+
+<div id="zoom-container" style="width: 100%; height: 600px;"></div>

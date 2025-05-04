@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ZoomMeetingComponent } from "./zoom-meeting/zoom-meeting.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ZoomMeetingComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
