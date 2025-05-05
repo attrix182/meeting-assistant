@@ -82,8 +82,8 @@ export class ZoomMeetingComponent implements OnInit {
       this.getRaisedHands();
     }).catch((error: any) => {
       console.error('Error al unirse a la reunión:', error);
-      if (error?.reason) {
-        this.joinError = error?.reason;
+      if (error?.reason == 'Meeting has not started') {
+        //this.joinError = error?.reason;
       }
       this.cdRef.detectChanges();
     });
