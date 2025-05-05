@@ -72,7 +72,6 @@ export class SettingsComponent {
     this.storageService.update( this.congregation.id, 'congregations',this.formSettings.value).then(() => {
       this.toggleEdit();
       this.getCongregation();
-      alert('Cambios guardados');
     });
   }
 
