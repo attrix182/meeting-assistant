@@ -1,0 +1,50 @@
+<div class="p-4">
+  <div>
+    <button (click)="goBack()"
+      class="bg-blue-500 hover:bg-blue-600 rounded-lg px-1 py-1 text-white font-bold cursor-pointer flex items-center justify-center gap-2">
+      <div class="pi pi-arrow-left"></div>
+      Volver
+    </button>
+  </div>
+
+  <div class="bg-[#ffffff26]  shadow-md rounded-xl p-6 max-w-md mx-auto mt-6">
+    <h3 class="text-xl text-white font-semibold mb-4 text-center">Control del cronómetro</h3>
+
+    <div class="flex justify-center gap-4">
+      <button (click)="playTimer()"
+        class="cursor-pointer bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center gap-2">
+        Play <div class="pi pi-play"></div>
+      </button>
+
+<!--       <button (click)="pauseTimer()"
+        class="cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-white font-medium py-2 px-4 rounded-lg transition duration-200  flex items-center gap-2">
+        Pause <div class="pi pi-pause"></div>
+      </button>
+ -->
+      <button (click)="stopTimer()"
+        class="cursor-pointer bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200  flex items-center gap-2">
+        Stop <div class="pi pi-stop"></div>
+      </button>
+    </div>
+
+    <div class="text-center mb-4 mt-4">
+      <p class="text-4xl font-mono text-blue-600">{{ formattedTime }}</p>
+      <p class="text-sm text-gray-400 mt-2 mb-2" *ngIf="timer.estado == 0">
+        Ultimo tiempo:
+        <span class="text-red-500">
+          {{lastTime  }}
+        </span>
+      </p>
+      <p class="text-sm text-gray-500">
+
+        <span [ngClass]="{
+          'text-green-600': timer.estado === 1,
+          'text-yellow-500': timer.estado === 2,
+          'text-red-500': timer.estado === 0
+        }">
+          {{  getTimerEstado(timer.estado) }}
+        </span>
+      </p>
+    </div>
+  </div>
+</div>

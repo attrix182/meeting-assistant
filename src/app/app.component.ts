@@ -4,7 +4,7 @@ import { ZoomMeetingComponent } from "./zoom-meeting/zoom-meeting.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ZoomMeetingComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

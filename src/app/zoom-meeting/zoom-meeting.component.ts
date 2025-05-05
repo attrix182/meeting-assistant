@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import ZoomMtgEmbedded from '@zoom/meetingsdk/embedded';
+import { StorageService } from '../services/storage.service';
+import { CronoComponent } from '../crono/crono.component';
+import { ActivatedRoute, Navigation, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 type ZoomClient = ReturnType<typeof ZoomMtgEmbedded.createClient>;
 
@@ -9,7 +13,7 @@ type ZoomClient = ReturnType<typeof ZoomMtgEmbedded.createClient>;
 @Component({
   selector: 'app-zoom-meeting',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CronoComponent],
   templateUrl: './zoom-meeting.component.html',
   styleUrls: ['./zoom-meeting.component.scss']
 })
@@ -17,14 +21,41 @@ export class ZoomMeetingComponent implements OnInit {
   client!: ZoomClient;
   participants: any[] = [];
   raisedHands: string[] = [];
+  congregationID!: string;
+  congregation!: any;
+  signature!: string;
+  joinError: string | null = null; // NUEVO
 
-  constructor(private cdRef: ChangeDetectorRef) { }
+  constructor(
+    private cdRef: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private storage: StorageService,
+    private auth: AuthService) { }
 
   ngOnInit() {
-    this.initZoom();
+    this.getData();
   }
 
-  async initZoom() {
+  async getSignature(meetingNumber: string, role: number, idWeb: number) {
+    this.auth.getSignatureZoom(meetingNumber, role, idWeb).subscribe((data: any) => {
+      this.signature = data.signature;
+      setTimeout(() => {
+        this.initZoom();
+      }
+        , 1000);
+    });
+  }
+
+  getData() {
+    this.congregationID = this.route.snapshot.params['congregation'];
+    this.storage.getByParameter('congregations', 'id', this.congregationID)
+      .subscribe(async (data: any) => {
+        this.congregation = data[0];
+        await this.getSignature(this.congregation.meetingID, 0, this.congregation.idWeb);
+      });
+  }
+
+  initZoom() {
     this.client = ZoomMtgEmbedded.createClient();
 
     this.client.init({
@@ -33,52 +64,49 @@ export class ZoomMeetingComponent implements OnInit {
       language: 'en-US',
     });
 
-    const meetingNumber = '5991224531';
-    const signature = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBLZXkiOiJxWGdGcFNUR1E5cU1tUTZqN1BlaFhBIiwic2RrS2V5IjoicVhnRnBTVEdROXFNbVE2ajdQZWhYQSIsIm1uIjoiNTk5MTIyNDUzMSIsInJvbGUiOjAsImlhdCI6MTc0NjM3NjU0NiwiZXhwIjoxNzQ2MzgzNzQ2LCJ0b2tlbkV4cCI6MTc0NjM4Mzc0Nn0.g2cWXaryb-zRO-Ggb66Co6S5ogN7igllB9DxZLqO-oE'; // generado en backend
-    const sdkKey = 'qXgFpSTGQ9qMmQ6j7PehXA';
+    const meetingNumber = this.congregation.meetingID;
+    const signature = this.signature; // generado en backend
+    const sdkKey = this.congregation.sdkKey;
 
-    await this.client.join({
+    this.client.join({
       sdkKey,
       signature,
       meetingNumber,
-      password: '123',
-      userName: 'Angular User',
+      password: this.congregation.meetingPassword.toString(),
+      userName: 'Orador',
+    }).then(() => {
+      // Conexión exitosa
+      this.joinError = null;
+      this.getParticipants();
+      this.updatePartipants();
+      this.getRaisedHands();
+    }).catch((error: any) => {
+      console.error('Error al unirse a la reunión:', error);
+      if (error?.reason) {
+        this.joinError = error?.reason;
+      }
+      this.cdRef.detectChanges();
     });
-
-    this.getParticipants();
-
-    this.updatePartipants();
-
-    this.getRaisedHands();
   }
 
   getParticipants() {
     this.participants = this.client.getAttendeeslist();
-    console.log('Participants:', this.participants);
   }
 
   updatePartipants() {
-    //averiguar si se dispara algo cuando alguien se une
     this.client.on('user-added', (data: any) => {
       this.getParticipants();
-      console.log('Se unio:', data);
     }
     );
     this.client.on('user-removed', (data: any) => {
-      console.log('Se fue:', data);
       this.getParticipants();
     }
     );
-
   }
 
   getRaisedHands() {
     this.client.on('user-updated', (data: any) => {
-      console.log('user-updated', data);
-
       const userId = data[0].userId;
-
-
       if (data[0].bRaiseHand) {
         const name = this.getNameById(userId);
         this.raisedHands.push(name);
@@ -92,13 +120,13 @@ export class ZoomMeetingComponent implements OnInit {
         }
       }
 
-
+      if (data[0].displayName) {
+        this.getParticipants();
+      }
       this.cdRef.detectChanges();
-
       console.log('Manos levantadas:', this.raisedHands);
     });
   }
-
 
   getNameById(id: string) {
     const participant = this.participants.find((p) => p.userId === id);

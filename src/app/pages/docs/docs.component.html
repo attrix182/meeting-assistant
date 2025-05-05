@@ -1,0 +1,55 @@
+
+  <section class="p-6 bg-gray-100 dark:bg-gray-900 min-h-screen flex justify-center items-start">
+
+    <div class="card bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 w-full max-w-2xl space-y-6">
+
+            <button (click)="goBack()"
+              class="bg-blue-500 hover:bg-blue-600 rounded-lg px-1 py-1 text-white font-bold cursor-pointer flex items-center justify-center gap-2">
+              <div class="pi pi-arrow-left"></div>
+              Volver
+            </button>
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Configuraciones</h2>
+
+      <p class="text-gray-700 dark:text-gray-300">1. Ir a Ajustes dentro de esta app, y colocar:</p>
+      <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1">
+        <li>Id de la reunión</li>
+        <li>Contraseña de la reunión</li>
+        <li>Clave SDK de Zoom</li>
+      </ul>
+
+      <div class="text-gray-700 dark:text-gray-300">
+        <strong>*Cómo obtener la clave SDK:</strong>
+        <a
+          class="text-blue-600 underline hover:text-blue-800 dark:text-blue-400"
+          href="https://community.zoom.com/t5/Zoom-App-Marketplace/How-do-I-get-API-Key-amp-API-Secret/m-p/28307"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://community.zoom.com/t5/Zoom-App-Marketplace/How-do-I-get-API-Key-amp-API-Secret/m-p/28307
+        </a>
+      </div>
+
+      <div class="text-gray-700 dark:text-gray-300">
+        Luego en la pantalla principal de la app, tocar el botón <strong>"Overlay"</strong>. Este nos copiará un enlace el cual debemos configurar en OBS.
+      </div>
+
+      <div class="text-gray-700 dark:text-gray-300 space-y-2">
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-white">Configuración OBS</h3>
+        <p>
+          Ir a <strong>sources/fuentes</strong>, tocar el ícono de <strong>+</strong>, agregar <strong>navegador/browser</strong>. En URL colocar la URL que te copió la app. Colocar una resolución adecuada como podría ser <strong>1280 x 720</strong>.
+        </p>
+        <p>
+          Luego en <strong>Custom CSS</strong>, escribir:
+
+         <!--  <code class="block bg-gray-200 dark:bg-gray-700 text-sm p-2 rounded mt-1">
+            body {&#123;<br />
+            &nbsp;&nbsp;background-color: rgba(0, 0, 0, 0);<br />
+            &nbsp;&nbsp;margin: 0px auto;<br />
+            &nbsp;&nbsp;overflow: hidden;<br />
+            &#125;}
+          </code> -->
+          y luego guardar. Por último, tocar <strong>OK</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
