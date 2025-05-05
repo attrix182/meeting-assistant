@@ -16,11 +16,13 @@ export class DashboardComponent {
   }
 
   ngOnInit() {
+
     this.getCongregation();
   }
 
   getCongregation() {
     this.congregation = JSON.parse(localStorage.getItem('congregation') || '{}');
+    console.log(this.congregation);
   }
 
   goToSettings() {
@@ -28,7 +30,7 @@ export class DashboardComponent {
   }
 
   goToOverlay() {
-    const overlayUrl = `${window.location.origin}/overlay/${this.congregation.id}`;
+    const overlayUrl = `${window.location.origin}/#/overlay/${this.congregation.id}`;
 
     navigator.clipboard.writeText(overlayUrl).then(() => {
       alert('La URL se ha copiado al portapapeles. Pega esta URL en tu escena de OBS. Asegurate de tener los datos correctos en ajustes. Revisa las guías para más detalles.');

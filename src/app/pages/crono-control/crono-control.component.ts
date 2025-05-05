@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { StorageService } from '../../services/storage.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 
@@ -21,8 +21,10 @@ export class CronoControlComponent {
     estado: 1, // 0: detenido, 1: corriendo, 2: pausa
   };
 
-  constructor(private storage: StorageService, private router: Router) {
-    this.idCongregation = window.location.pathname.split('/')[2];
+  constructor(private storage: StorageService, private router: Router, route: ActivatedRoute) {
+    route.paramMap.subscribe(params => {
+      this.idCongregation = params.get('congregation');
+    });
   }
 
   getStatusTimer() {

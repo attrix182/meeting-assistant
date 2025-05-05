@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     }
 
     const congregation = JSON.parse(storedCongregation);
-    const urlCongregationId = route.params['id'] || state.url.split('/')[2];
+    const urlCongregationId = route.params['id'] || state.url.split('/')[3];
 
     if (urlCongregationId && urlCongregationId !== congregation.id) {
       // El ID en la URL no coincide con el logueado

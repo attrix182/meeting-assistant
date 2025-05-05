@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { StorageService } from '../../services/storage.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -18,8 +18,11 @@ export class SettingsComponent {
   formSettings: FormGroup = new FormGroup({});
   enableEdit: boolean = false;
 
-  constructor(private storageService: StorageService, private fb: FormBuilder, private router: Router) {
-    this.idCongregation = window.location.pathname.split('/')[2];
+  constructor(private storageService: StorageService, private fb: FormBuilder, private router: Router, route: ActivatedRoute) {
+    route.paramMap.subscribe(params => {
+      this.idCongregation = params.get('congregation');
+    });
+    console.log(this.idCongregation);
   }
 
   ngOnInit() {
