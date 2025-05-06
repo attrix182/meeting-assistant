@@ -18,7 +18,6 @@ export class CronoControlComponent {
   timer = {
     timerStarted: 1,
     lastDateTimerStarted: new Date(),
-    estado: 1, // 0: detenido, 1: corriendo, 2: pausa
   };
 
   constructor(private storage: StorageService, private router: Router, route: ActivatedRoute) {
@@ -33,7 +32,7 @@ export class CronoControlComponent {
 
       const start = this.getDateFromFirestoreOrDate(this.timer.lastDateTimerStarted);
 
-      if (this.timer.estado === 1 && start) {
+      if (this.timer.timerStarted === 1 && start) {
         const now = Date.now();
         this.formattedTime = this.formatMilliseconds(now - start);
         this.startTimerInterval();
@@ -46,7 +45,7 @@ export class CronoControlComponent {
 
   ngOnInit() {
     this.getStatusTimer();
-    if (this.timer.estado === 1) {
+    if (this.timer.timerStarted === 1) {
       this.startTimerInterval();
     }
   }
@@ -67,7 +66,7 @@ export class CronoControlComponent {
 
   startTimerInterval() {
     this.intervalId = setInterval(() => {
-      if (this.timer.estado === 1) {
+      if (this.timer.timerStarted === 1) {
         const now = new Date().getTime();
         const start = this.getDateFromFirestoreOrDate(this.timer.lastDateTimerStarted);
 
@@ -104,7 +103,6 @@ export class CronoControlComponent {
     this.formattedTime = '00:00:00';
     this.storage.update('plaza-misericordia', 'congregations', {
       timerStarted: 0,
-      estado: 0,
       lastDateTimerStarted: null
     }).then(() => this.getStatusTimer());
   }
@@ -114,7 +112,6 @@ export class CronoControlComponent {
     clearInterval(this.intervalId);
     this.storage.update('plaza-misericordia', 'congregations', {
       timerStarted: 1,
-      estado: 1,
       lastDateTimerStarted: now
     }).then(() => this.getStatusTimer());
   }
@@ -123,7 +120,6 @@ export class CronoControlComponent {
     clearInterval(this.intervalId);
     this.storage.update('plaza-misericordia', 'congregations', {
       timerStarted: 2,
-      estado: 2
     }).then(() => this.getStatusTimer());
   }
 

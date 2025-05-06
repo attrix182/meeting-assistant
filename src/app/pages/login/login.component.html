@@ -1,4 +1,4 @@
-<section class="p-6 bg-white rounded-xl shadow-md max-w-md mx-auto mt-10">
+<section class="p-6 bg-white rounded-xl shadow-md max-w-md mx-auto mt-10" *ngIf="!showAddCongregationForm">
   <h3 class="text-xl font-semibold mb-4 text-gray-800">Elige tu congregación</h3>
 
   <div class="space-y-4">
@@ -22,7 +22,7 @@
       class="w-full p-3 bg-blue-500 cursor-pointer  text-white rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out  disabled:bg-blue-300">
       Ingresar
     </button>
-    <button (click)="showAddCongregationForm()" type="button"
+    <button (click)="toggleShowAddCongregationForm()" type="button"
       class="w-full
       p-3
       flex
@@ -35,4 +35,9 @@
       <div class="pi pi-plus"></div></button>
 
   </div>
+</section>
+
+
+<section *ngIf="showAddCongregationForm">
+   <app-add-congregation (onBack)="toggleShowAddCongregationForm()"></app-add-congregation>
 </section>

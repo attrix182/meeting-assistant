@@ -4,14 +4,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { AddCongregationComponent } from "../../add-congregation/add-congregation.component";
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AddCongregationComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  showAddCongregationForm: boolean = false;
   congregations: any[] = []
   selectedCongregation: any;
   password!: string ;
@@ -44,8 +46,8 @@ export class LoginComponent {
     }
   }
 
-  showAddCongregationForm(){
-
+  toggleShowAddCongregationForm(){
+    this.showAddCongregationForm = !this.showAddCongregationForm;
   }
 
 }

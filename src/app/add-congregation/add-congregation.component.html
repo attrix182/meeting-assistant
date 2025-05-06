@@ -1,0 +1,78 @@
+<div class="p-4">
+  <div>
+    <button (click)="goBack()"
+      class="bg-blue-500 hover:bg-blue-600 rounded-lg px-1 py-1 text-white font-bold cursor-pointer flex items-center justify-center gap-2">
+      <div class="pi pi-arrow-left"></div>
+      Volver
+    </button>
+  </div>
+
+  <section class="p-4 bg-white rounded-xl shadow-md max-w-md mx-auto mt-10">
+
+    <div [formGroup]="formSettings" class="space-y-4">
+      <div class="flex justify-center items-center mb-4 flex-col">
+        <h2 class="text-2xl">Agregar congregación</h2>
+      </div>
+
+
+      <div>
+        <h2 class="text-1xl font-semibold mb-4 text-center">Datos de la congregación</h2>
+      </div>
+
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+        <input id="name" formControlName="name" type="text" placeholder="Nombre"
+          class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100" />
+      </div>
+
+
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+        <input id="password" formControlName="password" type="password" placeholder="Contraseña"
+          class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100" />
+      </div>
+
+      <div class="mb-4">
+        <label for="idWeb" class="block text-sm font-medium text-gray-700 mb-1">ID en Misericordia Web</label>
+        <input id="idWeb" formControlName="idWeb" type="number" placeholder="idWeb"
+          class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100" />
+      </div>
+
+      <div class="mb-4">
+        <label for="sdkKey" class="block text-sm font-medium text-gray-700 mb-1">SDK Key de zoom</label>
+        <input id="sdkKey" formControlName="sdkKey" type="text" placeholder="Client ID de Zoom"
+          class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100" />
+      </div>
+
+      <hr class="border border-gray-300 mb-4">
+
+      <div>
+        <h2 class="text-1xl font-semibold mb-4 text-center">Datos de la reunion</h2>
+      </div>
+
+      <div class="mb-4">
+        <label for="meetingID" class="block text-sm font-medium text-gray-700 mb-1">ID de la reunión</label>
+        <input id="meetingID" formControlName="meetingID" type="text" placeholder="ID de la reunión"
+          class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100" />
+      </div>
+
+      <div class="mb-4">
+        <label for="meetingPassword" class="block text-sm font-medium text-gray-700 mb-1">Contraseña de la
+          reunión</label>
+        <input id="meetingPassword" formControlName="meetingPassword" type="text" placeholder="Contraseña de la reunión"
+          class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100" />
+      </div>
+
+        <div class="w-full flex gap-4">
+          <button (click)="saveChanges()"
+            class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 cursor-pointer">
+            Agregar
+          </button>
+        </div>
+      </div>
+
+
+
+  </section>
+
+</div>

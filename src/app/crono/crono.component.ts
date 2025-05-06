@@ -14,7 +14,7 @@ export class CronoComponent implements OnDestroy {
   interval: any = null;
   @Input() congregation: any;
 
-  private estado = 0;
+  private timerStarted = 0;
   private lastDateTimerStarted: any;
 
   constructor(private storage: StorageService) {}
@@ -30,10 +30,10 @@ export class CronoComponent implements OnDestroy {
   getStatusTimer() {
     this.storage.getByParameter('congregations', 'id', 'plaza-misericordia').subscribe((data: any) => {
       const timerData = data[0];
-      this.estado = timerData.estado;
+      this.timerStarted = timerData.timerStarted;
       this.lastDateTimerStarted = timerData.lastDateTimerStarted;
 
-      switch (this.estado) {
+      switch (this.timerStarted) {
         case 0:
           this.stopTimer();
           break;
