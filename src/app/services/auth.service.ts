@@ -22,7 +22,7 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  getSignatureZoom(meetingID: string, role: number = 0, idWeb = 0): Observable<any> {
+  getSignatureZoom(meetingID: string, role: number = 0, idWeb: number = 0): Observable<any> {
     return this.http.post(`${this.apiUrl}/`, { meetingNumber: meetingID, role, idWeb })
   }
 }
