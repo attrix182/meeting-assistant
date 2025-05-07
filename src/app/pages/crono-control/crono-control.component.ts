@@ -19,6 +19,7 @@ export class CronoControlComponent {
     timerStarted: 1,
     lastDateTimerStarted: new Date(),
   };
+  cong:any
 
   constructor(private storage: StorageService, private router: Router, route: ActivatedRoute) {
     route.paramMap.subscribe(params => {
@@ -28,7 +29,8 @@ export class CronoControlComponent {
 
   getStatusTimer() {
     this.storage.getByParameter('congregations', 'id', this.idCongregation).subscribe((data: any) => {
-      this.timer = data[0];
+      this.cong = data[0];
+      console.log(this.cong)
 
       const start = this.getDateFromFirestoreOrDate(this.timer.lastDateTimerStarted);
 
@@ -45,7 +47,7 @@ export class CronoControlComponent {
 
   ngOnInit() {
     this.getStatusTimer();
-    if (this.timer.timerStarted === 1) {
+    if (this.cong.timerStarted === 1) {
       this.startTimerInterval();
     }
   }
@@ -66,12 +68,15 @@ export class CronoControlComponent {
 
   startTimerInterval() {
     this.intervalId = setInterval(() => {
-      if (this.timer.timerStarted === 1) {
+      if (this.cong.timerStarted === 1) {
         const now = new Date().getTime();
-        const start = this.getDateFromFirestoreOrDate(this.timer.lastDateTimerStarted);
+        const start = this.getDateFromFirestoreOrDate(this.cong.lastDateTimerStarted);
 
         const elapsed = now - start;
+        console.log(elapsed)
         this.formattedTime = this.formatMilliseconds(elapsed);
+        console.log(this.cong)
+
       }
     }, 1000);
   }
@@ -101,7 +106,7 @@ export class CronoControlComponent {
     clearInterval(this.intervalId);
     this.lastTime = this.formattedTime;
     this.formattedTime = '00:00:00';
-    this.storage.update('plaza-misericordia', 'congregations', {
+    this.storage.update(this.cong.id, 'congregations', {
       timerStarted: 0,
       lastDateTimerStarted: null
     }).then(() => this.getStatusTimer());
@@ -109,8 +114,10 @@ export class CronoControlComponent {
 
   playTimer() {
     const now = new Date();
+    console.log('insert')
     clearInterval(this.intervalId);
-    this.storage.update('plaza-misericordia', 'congregations', {
+
+    this.storage.update(this.cong.id, 'congregations', {
       timerStarted: 1,
       lastDateTimerStarted: now
     }).then(() => this.getStatusTimer());
@@ -118,7 +125,7 @@ export class CronoControlComponent {
 
   pauseTimer() {
     clearInterval(this.intervalId);
-    this.storage.update('plaza-misericordia', 'congregations', {
+    this.storage.update(this.cong.id, 'congregations', {
       timerStarted: 2,
     }).then(() => this.getStatusTimer());
   }

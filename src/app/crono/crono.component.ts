@@ -28,7 +28,7 @@ export class CronoComponent implements OnDestroy {
   }
 
   getStatusTimer() {
-    this.storage.getByParameter('congregations', 'id', 'plaza-misericordia').subscribe((data: any) => {
+    this.storage.getByParameter('congregations', 'id', this.congregation.id).subscribe((data: any) => {
       const timerData = data[0];
       this.timerStarted = timerData.timerStarted;
       this.lastDateTimerStarted = timerData.lastDateTimerStarted;

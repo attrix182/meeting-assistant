@@ -29,7 +29,7 @@
 
     <div class="text-center mb-4 mt-4">
       <p class="text-4xl font-mono text-blue-600">{{ formattedTime }}</p>
-      <p class="text-sm text-gray-400 mt-2 mb-2" *ngIf="timer.timerStarted == 0">
+      <p class="text-sm text-gray-400 mt-2 mb-2" *ngIf="cong.timerStarted == 0">
         Ultimo tiempo:
         <span class="text-red-500">
           {{lastTime  }}
@@ -38,11 +38,11 @@
       <p class="text-sm text-gray-500">
 
         <span [ngClass]="{
-          'text-green-600': timer.timerStarted === 1,
-          'text-yellow-500': timer.timerStarted === 2,
-          'text-red-500': timer.timerStarted === 0
+          'text-green-600': cong.timerStarted === 1,
+          'text-yellow-500': cong.timerStarted === 2,
+          'text-red-500': cong.timerStarted === 0
         }">
-          {{  getTimerEstado(timer.timerStarted) }}
+          {{  getTimerEstado(cong.timerStarted) }}
         </span>
       </p>
     </div>
