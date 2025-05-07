@@ -38,14 +38,13 @@ export class ZoomMeetingComponent implements OnInit {
   }
 
   listenToScreenShare() {
-  this.client.on('active-share-change', (payload: any) => {
-    // payload.state puede ser 'Start' o 'Stop'
+  (this.client as any).on('active-share-change', (payload: any) => {
     if (payload.state === 'Start') {
       this.isScreenBeingShared = true;
     } else if (payload.state === 'Stop') {
       this.isScreenBeingShared = false;
     }
-    this.cdRef.detectChanges(); // actualiza la vista
+    this.cdRef.detectChanges();
     console.log('Compartición de pantalla activa:', this.isScreenBeingShared);
   });
 }
