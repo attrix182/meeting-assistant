@@ -28,6 +28,7 @@ export class CronoComponent implements OnDestroy {
   }
 
   getStatusTimer() {
+    console.log(this.congregation)
     this.storage.getByParameter('congregations', 'id', this.congregation.id).subscribe((data: any) => {
       const timerData = data[0];
       this.timerStarted = timerData.timerStarted;

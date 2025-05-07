@@ -30,16 +30,15 @@ export class CronoControlComponent {
   getStatusTimer() {
     this.storage.getByParameter('congregations', 'id', this.idCongregation).subscribe((data: any) => {
       this.cong = data[0];
-      console.log(this.cong)
+      const start = this.getDateFromFirestoreOrDate(this.cong.lastDateTimerStarted);
 
-      const start = this.getDateFromFirestoreOrDate(this.timer.lastDateTimerStarted);
-
-      if (this.timer.timerStarted === 1 && start) {
+      if (this.cong.timerStarted === 1 && start) {
         const now = Date.now();
         this.formattedTime = this.formatMilliseconds(now - start);
         this.startTimerInterval();
       } else {
         this.formattedTime = '00:00:00';
+        clearInterval(this.intervalId); // asegúrate de parar cualquier temporizador activo
       }
     });
   }
@@ -71,12 +70,8 @@ export class CronoControlComponent {
       if (this.cong.timerStarted === 1) {
         const now = new Date().getTime();
         const start = this.getDateFromFirestoreOrDate(this.cong.lastDateTimerStarted);
-
         const elapsed = now - start;
-        console.log(elapsed)
         this.formattedTime = this.formatMilliseconds(elapsed);
-        console.log(this.cong)
-
       }
     }, 1000);
   }
@@ -109,12 +104,11 @@ export class CronoControlComponent {
     this.storage.update(this.cong.id, 'congregations', {
       timerStarted: 0,
       lastDateTimerStarted: null
-    }).then(() => this.getStatusTimer());
+    }).then(() =>{ this.getStatusTimer()});
   }
 
   playTimer() {
     const now = new Date();
-    console.log('insert')
     clearInterval(this.intervalId);
 
     this.storage.update(this.cong.id, 'congregations', {
@@ -122,14 +116,6 @@ export class CronoControlComponent {
       lastDateTimerStarted: now
     }).then(() => this.getStatusTimer());
   }
-
-  pauseTimer() {
-    clearInterval(this.intervalId);
-    this.storage.update(this.cong.id, 'congregations', {
-      timerStarted: 2,
-    }).then(() => this.getStatusTimer());
-  }
-
 
   goBack() {
     this.router.navigate(['/dashboard', this.idCongregation]);

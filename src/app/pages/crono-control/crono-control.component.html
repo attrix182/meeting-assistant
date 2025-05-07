@@ -12,7 +12,8 @@
 
     <div class="flex justify-center gap-4">
       <button (click)="playTimer()"
-        class="cursor-pointer bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center gap-2">
+      [disabled]="cong.timerStarted === 1"
+        class="cursor-pointer bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-50">
         Play <div class="pi pi-play"></div>
       </button>
 
@@ -22,7 +23,8 @@
       </button>
  -->
       <button (click)="stopTimer()"
-        class="cursor-pointer bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200  flex items-center gap-2">
+      [disabled]="cong.timerStarted === 0"
+        class="cursor-pointer bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200  flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-50">
         Stop <div class="pi pi-stop"></div>
       </button>
     </div>

@@ -1,7 +1,7 @@
 <section class="overlay">
 
   <div class="timer-container">
-    <app-crono [congregation]="congregation"></app-crono>
+    <app-crono [congregation]="congregation" *ngIf="congregation.id"></app-crono>
   </div>
 
   <div class="manos-container">
