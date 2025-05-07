@@ -40,7 +40,7 @@ export class ZoomMeetingComponent implements OnInit {
     this.auth.getSignatureZoom(meetingNumber, role, idWeb).subscribe((data: any) => {
       this.signature = data.signature;
       setTimeout(() => {
-     //   this.initZoom();
+        this.initZoom();
       }
         , 1000);
     });
