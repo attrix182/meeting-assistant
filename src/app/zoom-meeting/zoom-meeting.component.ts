@@ -25,6 +25,7 @@ export class ZoomMeetingComponent implements OnInit {
   congregation!: any;
   signature!: string;
   joinError: string | null = null; // NUEVO
+  isScreenBeingShared: boolean = false;
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -35,6 +36,13 @@ export class ZoomMeetingComponent implements OnInit {
   ngOnInit() {
     this.getData();
   }
+
+listenToScreenShare() {
+  this.client.on('active-share-change', (payload: any) => {
+    this.isScreenBeingShared = !!payload?.userId;
+    this.cdRef.detectChanges();
+  });
+}
 
   async getSignature(meetingNumber: string, role: number, idWeb: number) {
     this.auth.getSignatureZoom(meetingNumber, role, idWeb).subscribe((data: any) => {
@@ -80,6 +88,7 @@ export class ZoomMeetingComponent implements OnInit {
       this.getParticipants();
       this.updatePartipants();
       this.getRaisedHands();
+      this.listenToScreenShare();
     }).catch((error: any) => {
       console.error('Error al unirse a la reunión:', error);
       if (error?.reason == 'Meeting has not started') {
