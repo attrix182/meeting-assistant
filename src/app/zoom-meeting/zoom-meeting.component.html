@@ -7,7 +7,7 @@
   <div class="manos-container">
     <ul class="manos-container-lista">
       <li    [ngStyle]="{
-        'font-size': congregation?.sizeTags || '45px',
+        'font-size': congregation?.sizeTags + 'px' || '45px',
         'color': congregation?.colorTags || '#ebe2e2'
       }" class="manos-container-lista-item" *ngFor="let user of raisedHands">
       <ng-container *ngIf="congregation.showEmoji">🖐</ng-container> {{ user }}</li>

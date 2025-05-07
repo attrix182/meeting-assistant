@@ -34,8 +34,8 @@ export class SettingsComponent {
       meetingID: [this.congregation?.meetingID || ''],
       meetingPassword: [this.congregation?.meetingPassword || ''],
       sdkKey: [this.congregation?.sdkKey || ''],
-      sizeTags: [this.congregation?.sizeTags || ''],
-      timerSize: [this.congregation?.timerSize || ''],
+      sizeTags: [this.congregation?.sizeTags || 42],
+      timerSize: [this.congregation?.timerSize || 60],
       colorTags: [this.congregation?.colorTags || ''],
       showEmoji: [this.congregation?.showEmoji || ''],
     });

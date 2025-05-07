@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import ZoomMtgEmbedded from '@zoom/meetingsdk/embedded';
 import { StorageService } from '../services/storage.service';
 import { CronoComponent } from '../crono/crono.component';
-import { ActivatedRoute, Navigation, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 type ZoomClient = ReturnType<typeof ZoomMtgEmbedded.createClient>;
@@ -40,7 +40,7 @@ export class ZoomMeetingComponent implements OnInit {
     this.auth.getSignatureZoom(meetingNumber, role, idWeb).subscribe((data: any) => {
       this.signature = data.signature;
       setTimeout(() => {
-        this.initZoom();
+     //   this.initZoom();
       }
         , 1000);
     });

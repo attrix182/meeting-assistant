@@ -13,6 +13,8 @@
       flex-direction: column;
       gap: 10px;
       min-width: 380px;
+      max-width: 555px;
+      overflow-y: auto;
 
       &-item{
         font-size: 38px;
