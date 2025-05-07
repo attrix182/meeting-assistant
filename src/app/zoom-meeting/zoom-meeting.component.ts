@@ -38,10 +38,12 @@ export class ZoomMeetingComponent implements OnInit {
   }
 
 listenToScreenShare() {
-  this.client.on('active-share-change', (payload: any) => {
-    this.isScreenBeingShared = !!payload?.userId;
-    this.cdRef.detectChanges();
-  });
+  const eventClient = this.client.getEventClient();
+
+eventClient.onActiveShareChange((payload: any) => {
+  this.isScreenBeingShared = !!payload?.userId;
+  this.cdRef.detectChanges();
+});
 }
 
   async getSignature(meetingNumber: string, role: number, idWeb: number) {
