@@ -6,7 +6,7 @@ import { CronoComponent } from '../crono/crono.component';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-type ZoomClient = ReturnType<typeof ZoomMtgEmbedded.createClient>;
+type ZoomClientModel = ReturnType<typeof ZoomMtgEmbedded.createClient>;
 
 
 
@@ -18,13 +18,14 @@ type ZoomClient = ReturnType<typeof ZoomMtgEmbedded.createClient>;
   styleUrls: ['./zoom-meeting.component.scss']
 })
 export class ZoomMeetingComponent implements OnInit {
-  client!: ZoomClient;
   participants: any[] = [];
   raisedHands: string[] = [];
   congregationID!: string;
   congregation!: any;
   signature!: string;
   joinError: string | null = null;
+  isScreenBeingShared: boolean = false;
+  client: ZoomClientModel = ZoomMtgEmbedded.createClient();
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -36,32 +37,15 @@ export class ZoomMeetingComponent implements OnInit {
     this.getData();
   }
 
-  async getSignature(meetingNumber: string, role: number, idWeb: number) {
-    this.auth.getSignatureZoom(meetingNumber, role, idWeb).subscribe((data: any) => {
-      this.signature = data.signature;
-      setTimeout(() => {
-        this.initZoom();
-      }
-        , 1000);
-    });
-  }
-
-  getData() {
-    this.congregationID = this.route.snapshot.params['congregation'];
-    this.storage.getByParameter('congregations', 'id', this.congregationID)
-      .subscribe(async (data: any) => {
-        this.congregation = data[0];
-        await this.getSignature(this.congregation.meetingID, 0, this.congregation.idWeb);
-      });
-  }
-
   initZoom() {
-    this.client = ZoomMtgEmbedded.createClient();
+
 
     this.client.init({
       debug: true,
       zoomAppRoot: document.getElementById('zoom-container') as HTMLElement,
-      language: 'en-US',
+      language: 'es-ES',
+      patchJsMedia: true,
+      leaveOnPageUnload: true
     });
 
     const meetingNumber = this.congregation.meetingID;
@@ -80,6 +64,7 @@ export class ZoomMeetingComponent implements OnInit {
       this.getParticipants();
       this.updatePartipants();
       this.getRaisedHands();
+      this.listenToScreenShare();
     }).catch((error: any) => {
       console.error('Error al unirse a la reunión:', error);
       if (error?.reason == 'Meeting has not started') {
@@ -87,6 +72,37 @@ export class ZoomMeetingComponent implements OnInit {
       }
       this.cdRef.detectChanges();
     });
+  }
+
+  listenToScreenShare() {
+  (this.client as any).on('active-share-change', (payload: any) => {
+    if (payload.state === 'Start') {
+      this.isScreenBeingShared = true;
+    } else if (payload.state === 'Stop') {
+      this.isScreenBeingShared = false;
+    }
+    this.cdRef.detectChanges();
+    console.log('Compartición de pantalla activa:', this.isScreenBeingShared);
+  });
+}
+
+  async getSignature(meetingNumber: string, role: number, idWeb: number) {
+    this.auth.getSignatureZoom(meetingNumber, role, idWeb).subscribe((data: any) => {
+      this.signature = data.signature;
+      setTimeout(() => {
+        this.initZoom();
+      }
+        , 1000);
+    });
+  }
+
+  getData() {
+    this.congregationID = this.route.snapshot.params['congregation'];
+    this.storage.getByParameter('congregations', 'id', this.congregationID)
+      .subscribe(async (data: any) => {
+        this.congregation = data[0];
+        await this.getSignature(this.congregation.meetingID, 0, this.congregation.idWeb);
+      });
   }
 
   getParticipants() {
